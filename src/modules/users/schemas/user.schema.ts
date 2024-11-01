@@ -20,7 +20,7 @@ export class User {
   @Prop()
   address: string;
 
-  @Prop({ default: 'USERS' })
+  @Prop({ default: 'CUSTOMER' })
   role: string;
 
   @Prop()

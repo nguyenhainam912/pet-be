@@ -4,6 +4,11 @@ import { User } from 'src/decorator/customize';
 
 export type OrderDocument = HydratedDocument<Order>;
 
+enum PaymentMethod {
+  TM = 'TM',
+  CK = 'CK',
+}
+
 @Schema({ timestamps: true })
 export class Order {
   @Prop({
@@ -14,13 +19,25 @@ export class Order {
   userId: mongoose.Schema.Types.ObjectId;
 
   @Prop({ required: true })
-  totalPrice: Number;
+  totalPrice: number;
 
   @Prop({ required: true })
   phone: String;
 
   @Prop({ required: true })
   address: String;
+
+  @Prop({ required: true })
+  pay: PaymentMethod;
+
+  @Prop({ type: Array })
+  detail: {
+    productId: {
+      type: mongoose.Schema.Types.ObjectId;
+      ref: 'Product';
+    };
+    quantity: number;
+  };
 
   @Prop({ type: Object })
   createdBy: { _id: mongoose.Schema.Types.ObjectId; email: string };

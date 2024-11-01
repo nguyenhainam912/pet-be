@@ -30,10 +30,10 @@ export class Product {
   tag: String;
 
   @Prop({ default: 1 })
-  quantity: Number;
+  quantity: number;
 
   @Prop()
-  price: Number;
+  price: number;
 
   @Prop({ type: Object })
   createdBy: { _id: mongoose.Schema.Types.ObjectId; email: string };

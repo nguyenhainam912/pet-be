@@ -13,11 +13,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { SubCategoriesModule } from './modules/subCategories/subCategories.module';
 import { ProductsModule } from './modules/products/products.module';
-import { OrdersService } from './modules/orders/orders.service';
-import { OrderDetailsService } from './modules/orderDetails/orderDetaiils.service';
 import { OrderModule } from './modules/orders/orders.module';
-import { OrderDetailModule } from './modules/orderDetails/orderDetaiils.module';
-import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -44,8 +40,6 @@ import { CartModule } from './modules/cart/cart.module';
     SubCategoriesModule,
     ProductsModule,
     OrderModule,
-    OrderDetailModule,
-    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

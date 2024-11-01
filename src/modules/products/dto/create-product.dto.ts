@@ -20,8 +20,8 @@ export class CreateProductDto {
   tag: string;
 
   @IsOptional()
-  quantity: Number;
+  quantity: number;
 
   @IsNotEmpty()
-  price: Number;
+  price: number;
 }

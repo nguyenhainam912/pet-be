@@ -2,6 +2,11 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Order as OrderM, OrderDocument } from './schemas/order.schema';
+import {
+  Product as ProductM,
+  ProductDocument,
+} from '../products/schemas/product.schema';
+
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import aqp from 'api-query-params';
@@ -15,14 +20,35 @@ export class OrdersService {
   constructor(
     @InjectModel(OrderM.name)
     private orderModel: SoftDeleteModel<OrderDocument>,
+    @InjectModel(ProductM.name)
+    private productModel: SoftDeleteModel<ProductDocument>,
   ) {}
 
-  async create(createCategoryDto: CreateOrderDto, @User() user: IUser) {
+  async create(createOrderDto: CreateOrderDto, @User() user: IUser) {
     let data = await this.orderModel.create({
-      ...createCategoryDto,
+      ...createOrderDto,
       userId: user._id,
       createdBy: { _id: user._id, email: user.email },
     });
+
+    createOrderDto.detail.forEach(async (item) => {
+      const product = await this.productModel.findById(item.productId);
+      if (product && !isNaN(product?.quantity)) {
+        // Chỉ thực hiện cập nhật khi product tồn tại và quantity là một số
+        await this.productModel.updateOne(
+          { _id: item.productId },
+          {
+            updatedBy: { id: user._id, email: user.email },
+            quantity:
+              ((+product?.quantity as number) ?? 0) -
+              ((+item.quantity as number) ?? 0),
+          },
+        );
+      } else {
+        console.error('Lỗi: Sản phẩm không tồn tại hoặc quantity không hợp lệ');
+      }
+    });
+
     return data;
   }
 
