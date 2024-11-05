@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import mongoose, { Model } from 'mongoose';
 import { User as UserM, UserDocument } from './schemas/user.schema';
+import { Order as OrderM, OrderDocument } from '../orders/schemas/order.schema';
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IUser } from './users.interface';
@@ -14,6 +15,8 @@ import { User } from 'src/decorator/customize';
 export class UsersService {
   constructor(
     @InjectModel(UserM.name) private userModel: SoftDeleteModel<UserDocument>,
+    @InjectModel(OrderM.name)
+    private orderModel: SoftDeleteModel<OrderDocument>,
   ) {}
 
   getHashPassword = (password: string) => {
@@ -119,5 +122,17 @@ export class UsersService {
     );
 
     return await this.userModel.softDelete({ _id: id });
+  }
+
+  async dashboard() {
+    const users = await this.userModel.find();
+    const orders = await this.orderModel.find();
+    let price = 0;
+
+    orders.map((item) => {
+      price += item.totalPrice;
+    });
+
+    return { countUser: users.length, totalPrice: price };
   }
 }

@@ -31,6 +31,12 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('/dashboard')
+  @ResponseMessage('Fetch dashboard')
+  getDashboard() {
+    return this.usersService.dashboard();
+  }
+
   @Get()
   @Public()
   @ResponseMessage('fetch user with pageinate')

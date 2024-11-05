@@ -25,6 +25,18 @@ export class CategoriesController {
     return this.productsService.create(createProductDto, user);
   }
 
+  @Get('/search')
+  @Public()
+  @ResponseMessage('search')
+  search(
+    @Query('current') currentPage: string,
+    @Query('pageSize') limit: string,
+    @Query() qs: string,
+    @Query('name') name: string,
+  ) {
+    return this.productsService.search(+currentPage, +limit, qs, name);
+  }
+
   @Get()
   @Public()
   @ResponseMessage('fetch product with pageinate')

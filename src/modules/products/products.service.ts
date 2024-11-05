@@ -52,6 +52,32 @@ export class ProductsService {
     };
   }
 
+  async search(currentPage: number, limit: number, qs: string, nameS: string) {
+    const { filter, sort, population } = aqp(qs);
+    delete filter.current;
+    delete filter.pageSize;
+    let defaultLimit = +limit ? +limit : 10;
+    const result = await this.productModel
+      // .find({ name: { $regex: `${name}`, $options: 'i' } })
+      .find({ name: new RegExp(nameS, 'i') })
+      .sort(sort as any)
+      .populate(population)
+      .exec();
+
+    const totalItems = result.length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    return {
+      meta: {
+        current: currentPage, //trang hiện tại
+        pageSize: limit, //số lượng bản ghi đã lấy
+        pages: totalPages, //tổng số trang với điều kiện query
+        total: totalItems, // tổng số phần tử (số bản ghi)
+      },
+      result, //kết quả query
+    };
+  }
+
   async findById(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) return 'Not found';
     return await this.productModel
