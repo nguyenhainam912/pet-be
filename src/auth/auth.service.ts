@@ -60,10 +60,10 @@ export class AuthService {
       email,
       role,
     };
-    const refresh_token = this.createRefreshToken(payload);
-    await this.updateUserToken(refresh_token, _id);
+    const refreshToken = this.createRefreshToken(payload);
+    await this.updateUserToken(refreshToken, _id);
     //set refresh as cookies
-    response.cookie('refresh_token', refresh_token, {
+    response.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       maxAge: ms(this.configService.get<string>('JWT_ACCES_EXPIRE')) * 1000,
     });
@@ -127,14 +127,14 @@ export class AuthService {
           email,
           role,
         };
-        const refresh_token = this.createRefreshToken(payload);
-        await this.updateUserToken(refresh_token, _id.toString());
+        const refreshToken = this.createRefreshToken(payload);
+        await this.updateUserToken(refreshToken, _id.toString());
         const userRole = user.role as unknown as { _id: string; name: string };
         //const temp: any = await this.rolesService.findOne(userRole._id);
 
         //set refresh as cookies
-        response.clearCookie('refresh_token');
-        response.cookie('refresh_token', refresh_token, {
+        response.clearCookie('refreshToken');
+        response.cookie('refreshToken', refreshToken, {
           httpOnly: true,
           maxAge: ms(this.configService.get<string>('JWT_ACCES_EXPIRE')) * 1000,
         });
@@ -179,7 +179,7 @@ export class AuthService {
 
   logout = async (response: Response) => {
     //await this.updateUserToken('', user._id);
-    response.clearCookie('refresh_token');
+    response.clearCookie('refreshToken');
     return 'ok';
   };
 }

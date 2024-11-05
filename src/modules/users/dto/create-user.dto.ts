@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsNotEmptyObject,
   IsObject,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -21,15 +22,16 @@ export class CreateUserDto {
   @IsNotEmpty()
   fullName: string;
 
+  @IsOptional()
   avatar: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   phone: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   address: string;
 
-  @IsString()
+  @IsOptional()
   role: string;
 
   // @IsNotEmptyObject()

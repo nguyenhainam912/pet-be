@@ -43,7 +43,7 @@ export class CategoriesController {
     return this.productsService.findById(id);
   }
 
-  @Put()
+  @Patch()
   @ResponseMessage('Update a product')
   update(@Body() updateCategoryDto: UpdateProductDto, @User() user: IUser) {
     return this.productsService.update(updateCategoryDto, user);

@@ -26,6 +26,7 @@ export class CategoriesController {
   }
 
   @Get()
+  @Public()
   @ResponseMessage('fetch category with pageinate')
   findAllWithPage(
     @Query('current') currentPage: string,

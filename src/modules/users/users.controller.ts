@@ -49,7 +49,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Put()
+  @Patch()
   @ResponseMessage('Update a User')
   update(@Body() updateUserDto: UpdateUserDto, @User() user: IUser) {
     return this.usersService.update(updateUserDto, user);

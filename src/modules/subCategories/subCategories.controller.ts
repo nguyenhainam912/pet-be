@@ -26,6 +26,7 @@ export class SubCategoriesController {
   }
 
   @Get()
+  @Public()
   @ResponseMessage('fetch subcategory with pageinate')
   findAllWithPage(
     @Query('current') currentPage: string,

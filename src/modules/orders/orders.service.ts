@@ -67,7 +67,15 @@ export class OrdersService {
       .skip(offset)
       .limit(defaultLimit)
       .sort(sort as any)
-      .populate(population)
+      .populate({
+        path: 'detail',
+        populate: [
+          {
+            path: 'productId',
+            model: 'Product',
+          },
+        ],
+      })
       .exec();
     return {
       meta: {
